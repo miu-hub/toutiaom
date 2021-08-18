@@ -39,8 +39,22 @@
           class="iconfont icon-yanzhengma"
           placeholder="请输入验证码"
           ><template #button>
-            <van-button size="small" round @click.prevent="getCode"
-              >发送验证码</van-button
+            <!-- 倒计时控件 -->
+            <van-count-down
+              @finish="time_btn = false"
+              v-if="time_btn"
+              :time="1000 * 60"
+              format="ss s"
+            />
+            <!-- 发送验证码 -->
+            <van-button
+              v-else
+              :disabled="time_btn"
+              size="small"
+              round
+              @click.prevent="getCode"
+            >
+              发送验证码</van-button
             >
           </template></van-field
         >
@@ -91,9 +105,11 @@ export default {
           { pattern: /^\d{6}$/, message: "输入6位数字的验证码" },
         ],
       },
+
+      // 验证码按钮禁用
+      time_btn: false,
     };
   },
-
   methods: {
     // 登录
     async onLogin() {
@@ -104,8 +120,8 @@ export default {
         const res = await userLogin(this.userInfo);
         // 登录成功
         let datas = res.data.data;
-        // 将用户token存入本地存储
-        localStorage.setItem("user_token", datas.token);
+        // 将用户token存入VueX
+        this.$store.commit("setUser", datas);
         // 加载提示
         Toast.success("登录成功");
         // 关闭登录显示登录中
@@ -137,11 +153,15 @@ export default {
         // 验证
         await this.$refs["forms"].validate("mobile");
         // 发送验证码
-        const data = await userCode(this.userInfo.mobile);
-        console.log(data);
+        // 禁用btn
+        this.time_btn = true;
+        await userCode(this.userInfo.mobile);
+        // 提示信息
         Toast.success("验证码发送成功");
       } catch (error) {
         Toast.fail(error.message);
+        // 开启btn
+        this.time_btn = false;
       }
     },
   },
