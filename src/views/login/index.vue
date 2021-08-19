@@ -8,6 +8,7 @@
       left-text="返回"
       class="header_top_nav"
       left-arrow
+      @click-left="skip"
     />
 
     <!-- 登陆数据 -->
@@ -163,6 +164,11 @@ export default {
         // 开启btn
         this.time_btn = false;
       }
+    },
+
+    // 跳转方法
+    skip() {
+      this.$router.push("/user");
     },
   },
 };

@@ -27,6 +27,5 @@ export default {
 
 <style lang="less" scoped>
 #layout {
-  background-color: pink;
 }
 </style>
