@@ -9,7 +9,7 @@ export const getItem = (name) => {
     // 交由trycatch处理
     try {
         // 将其转化为string，若是成功则返回转化后的数据
-        return JSON.parse(names);
+        return JSON.parse(names);;
     } catch (error) {
         // 转化失败则说明获取的数据非对象类型，可直接返回
         return names;
@@ -20,7 +20,8 @@ export const getItem = (name) => {
 export const setItem = (name, value) => {
     // 判断用户传入的数据类型是否为对象
     // 是则将其转为字符串设置--不是则直接设置
-    if ((typeof value) === 'Object') {
+    // console.log(typeof value);
+    if (typeof value === 'object') {
         let values = JSON.stringify(value);
         localStorage.setItem(name, values);
     } else {
@@ -30,6 +31,6 @@ export const setItem = (name, value) => {
 };
 
 // 移除本地存储数据
-export const removeItem = name => {
+export const remove_Item = name => {
     localStorage.removeItem(name);
 }

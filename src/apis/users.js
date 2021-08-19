@@ -18,6 +18,16 @@ export const userLogin = (data) => {
 export const userCode = (mobile) => {
     return request({
         method: 'GET',
-        url: `/app/v1_0/sms/codes/${mobile}`
+        url: `/app/v1_0/sms/codes/${mobile}`,
+    })
+}
+
+//获取用户资料
+export const getUser = () => {
+    return request({
+        method: 'GET',
+        url: '/app/v1_0/user/profile'
+
+        //用户token在请求拦截中设置了
     })
 }

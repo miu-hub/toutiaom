@@ -5,9 +5,9 @@ import Vuex from 'vuex'
 import { getItem, setItem, removeItem } from '@/utils/storage'
 
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 // 定义一个常量来控本地存储的值----避免出现开发时名称错误
-const user_KEY = 'user';//用户token
+export const user_KEY = 'user';//用户token
 
 export default new Vuex.Store({
   state: {

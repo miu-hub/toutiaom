@@ -8,7 +8,7 @@
       left-text="返回"
       class="header_top_nav"
       left-arrow
-      @click-left="skip"
+      @click-left="$router.push('/user')"
     />
 
     <!-- 登陆数据 -->
@@ -82,6 +82,7 @@
 </template>
 
 <script>
+// 引入提示信息
 import { Toast } from "vant";
 import { userLogin, userCode } from "@/apis/users.js";
 export default {
@@ -106,7 +107,6 @@ export default {
           { pattern: /^\d{6}$/, message: "输入6位数字的验证码" },
         ],
       },
-
       // 验证码按钮禁用
       time_btn: false,
     };
@@ -164,11 +164,6 @@ export default {
         // 开启btn
         this.time_btn = false;
       }
-    },
-
-    // 跳转方法
-    skip() {
-      this.$router.push("/user");
     },
   },
 };
