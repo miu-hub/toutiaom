@@ -116,7 +116,7 @@ export default {
         let datas = res.data.data;
 
         this.userInfo = datas;
-        console.log(datas);
+        // console.log(datas);
       } catch (error) {
         console.log(error);
       }
