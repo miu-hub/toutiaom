@@ -14,7 +14,7 @@
               <template v-slot:error>加载失败</template> -->
             </van-image>
           </div>
-          <p>{{ userInfo.name }}</p>
+          <p>{{ userInfo.name || "新用户" }}</p>
         </div>
         <!-- 编辑用户信息按钮 -->
         <van-button plain round class="btn_edit" type="primary" size="small"

@@ -79,5 +79,10 @@ export default {
       border: 0px;
     }
   }
+
+  /deep/.van-tab {
+    border-right: 1px solid rgb(238, 236, 236);
+    padding: 0px 20px;
+  }
 }
 </style>

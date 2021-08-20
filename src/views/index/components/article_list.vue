@@ -11,7 +11,7 @@
       <!-- 下拉刷新的组件 -->
       <van-pull-refresh v-model="isloading" @refresh="onRefresh">
         <!-- 包裹文章内容 -->
-        <van-cell v-for="(items, i) in list" :key="i" :title="items.title" />
+        <ArticleItem v-for="(items, i) in list" :key="i" :items="items" />
       </van-pull-refresh>
     </van-list>
   </div>
@@ -21,6 +21,8 @@
 import { Toast } from "vant";
 // 导入获取文章信息的请求接口方法
 import { getArticleInfo } from "@/apis/articleApi";
+// 引入公共组件toutiao-m\src\components
+import article_item from "@/components/article_item/";
 export default {
   name: "articleList",
   props: {
@@ -31,6 +33,11 @@ export default {
       // 必须有
       required: true,
     },
+  },
+
+  components: {
+    // 注册公共组件
+    ArticleItem: article_item,
   },
 
   data() {
@@ -123,7 +130,7 @@ export default {
 #list {
   padding: 0px 10px;
   .loading_list {
-    overflow: auto;
+    overflow-y: auto;
     width: 355px;
     position: fixed;
     top: 100px;
