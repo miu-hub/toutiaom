@@ -7,20 +7,42 @@
         icon="search"
         color="rgba(255, 255, 255,.1)"
         type="primary"
+        size="small"
         round
         id="btn_sea"
         >点击搜索</van-button
       >
     </div>
     <!-- 导航区 -->
-    <van-tabs v-model="active" color="rgb(26, 16, 68)">
+    <van-tabs
+      v-model="active"
+      title-active-color="rgb(26, 16, 68)"
+      color="rgb(26, 16, 68)"
+      title-inactive-color="#666"
+      :swipeable="true"
+    >
       <van-tab :title="item.name" v-for="(item, i) in art_channels" :key="i">
         <!-- 文章列表 -->
         <!-- 每个频道都创建一个组件 -->
         <!-- 将每个频道数据分别传入对应的组件 -->
         <articleList :item="item" />
       </van-tab>
+      <!-- 占据切换栏的位置，避免因为切换到蓝底而导致的按钮遮挡栏 -->
+      <div slot="nav-right" id="codd"></div>
+
+      <!-- 弹出层按钮 -->
+      <div slot="nav-right" id="right_nav" @click="show = true">
+        <i class="iconfont icon-gengduo"></i>
+      </div>
     </van-tabs>
+    <!-- 频道弹出层 -->
+    <van-popup
+      v-model="show"
+      closeable
+      get-container="body"
+      position="bottom"
+      :style="{ height: '100%' }"
+    />
   </div>
 </template>
 
@@ -46,6 +68,8 @@ export default {
       active: 0,
       // 文章列表信息
       art_channels: {},
+      // 控制频道弹出层
+      show: false,
     };
   },
 
@@ -78,6 +102,22 @@ export default {
       width: 200px;
       border: 0px;
     }
+  }
+  // 折叠导航栏按钮
+  #right_nav {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 0px;
+    width: 40px;
+    height: 45px;
+    background-color: rgba(41, 213, 243, 0.3);
+  }
+  // 占位box
+  #codd {
+    width: 40px;
+    flex-shrink: 0;
   }
 
   /deep/.van-tab {

@@ -134,8 +134,6 @@ export default {
     width: 355px;
     position: fixed;
     top: 100px;
-    // left: 0;
-    // right: 0;
     bottom: 50px;
   }
 }

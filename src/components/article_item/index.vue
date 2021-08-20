@@ -99,6 +99,7 @@ export default {
         margin-right: 5px;
         width: 100px;
         height: 80px;
+        border: 1px solid #666;
       }
     }
 
@@ -106,6 +107,7 @@ export default {
       float: right;
       width: 100px;
       height: 80px;
+      border: 1px solid #666;
     }
   }
 }

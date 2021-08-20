@@ -84,6 +84,8 @@
 
 .icon-gengduo:before {
   content: "\e601";
+  font-size: 24px;
+  color: #000;
 }
 
 .icon-yanzhengma:before {
