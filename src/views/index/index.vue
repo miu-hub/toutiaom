@@ -42,7 +42,9 @@
       get-container="body"
       position="bottom"
       :style="{ height: '100%' }"
-    />
+    >
+      <Channels :userChannels="art_channels" />
+    </van-popup>
   </div>
 </template>
 
@@ -51,11 +53,15 @@
 import { getArticlegetChannels } from "@/apis/articleApi";
 // 引入子组件
 import articleList from "./components/article_list.vue";
+// 引入频道组件
+import channels from "@/components/pd_pull/";
 export default {
   name: "index",
   // 注册子组件
   components: {
     articleList: articleList,
+
+    Channels: channels,
   },
   created() {
     // 刷新页面加载
