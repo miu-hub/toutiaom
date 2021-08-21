@@ -3,13 +3,18 @@
   <div id="index">
     <!-- 头部 -->
     <div class="header_top_nav in">
+      <div id="logo">
+        <div id="img"></div>
+        <p>MIUluotn</p>
+      </div>
       <van-button
         icon="search"
         color="rgba(255, 255, 255,.1)"
         type="primary"
-        size="small"
+        size="mini"
         round
         id="btn_sea"
+        @click="$router.push('/search')"
         >点击搜索</van-button
       >
     </div>
@@ -152,15 +157,39 @@ export default {
 #index {
   .in {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     height: 54px;
     position: relative;
     background-color: rgb(26, 16, 68);
 
+    #logo {
+      display: flex;
+      justify-content: left;
+      height: 40px;
+      margin-left: 20px;
+      #img {
+        width: 40px;
+        height: 40px;
+        background-image: url("./logo/MIU.png");
+        background-repeat: no-repeat;
+        background-size: contain;
+        // background-position: -4px 4px;
+      }
+      p {
+        font-size: 18px;
+        height: 40px;
+        margin-left: 10px;
+        line-height: 40px;
+        font-weight: 700;
+        color: #fff;
+      }
+    }
+
     #btn_sea {
-      width: 200px;
+      width: 150px;
       border: 0px;
+      margin-right: 20px;
     }
   }
   // 折叠导航栏按钮

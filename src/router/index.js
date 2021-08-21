@@ -13,7 +13,7 @@ const routes = [
   },
   {
     path: '/',
-    component: () => import('../views/layout/'),
+    component: () => import('@/views/layout/'),
     children: [
       {
         path: '',
@@ -35,6 +35,11 @@ const routes = [
         component: () => import('@/views/user/')
       }
     ]
+  },
+  {
+    path: '/search',
+    name: 'search',
+    component: () => import('@/views/search/')
   }
 ]
 
