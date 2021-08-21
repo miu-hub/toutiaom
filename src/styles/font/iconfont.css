@@ -60,6 +60,11 @@
 
 .icon-guanbi:before {
   content: "\e6bf";
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #ccc;
+  border-radius: 50%;
 }
 
 .icon-pinglun:before {

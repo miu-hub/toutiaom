@@ -31,7 +31,7 @@
       <div slot="nav-right" id="codd"></div>
 
       <!-- 弹出层按钮 -->
-      <div slot="nav-right" id="right_nav" @click="show = true">
+      <div slot="nav-right" id="right_nav" @click="top_cen">
         <i class="iconfont icon-gengduo"></i>
       </div>
     </van-tabs>
@@ -43,7 +43,7 @@
       position="bottom"
       :style="{ height: '100%' }"
     >
-      <Channels :userChannels="art_channels" />
+      <Channels :userChannels="art_channels" :active="this.active" />
     </van-popup>
   </div>
 </template>
@@ -55,6 +55,11 @@ import { getArticlegetChannels } from "@/apis/articleApi";
 import articleList from "./components/article_list.vue";
 // 引入频道组件
 import channels from "@/components/pd_pull/";
+// 引入vuex
+import { mapState } from "vuex";
+// 引入store封装的方法
+import { getItem } from "@/utils/storage";
+import { Toast } from "vant";
 export default {
   name: "index",
   // 注册子组件
@@ -66,6 +71,24 @@ export default {
   created() {
     // 刷新页面加载
     this.get_art_channels();
+  },
+  mounted() {
+    // 注册全局事件
+    this.$bus.$on("chext", (value, del) => {
+      if (del) {
+        this.active = value;
+        return;
+      }
+
+      // 接收出发后隐藏频道列表
+      this.show = false;
+      //  跳转到切换的页面
+      this.active = value;
+    });
+  },
+  // 组件销毁前卸载全局事件总线
+  beforeDestroy() {
+    this.$bus.$off("chext");
   },
 
   data() {
@@ -82,14 +105,45 @@ export default {
   methods: {
     // 异步请求----获取文章频道
     async get_art_channels() {
+      // 判断登录状态决定列表数据的获取方法
+      if (this.User) {
+        try {
+          const res = await getArticlegetChannels();
+          // 将返回的值渲染给组件
+          this.art_channels = res.data.data.channels;
+        } catch (error) {
+          Toast.fail("获取失败");
+        }
+        return;
+      }
+      // 获取本地数据-----没有登录的请求下
+      let los = getItem("user_channels");
+      // 判断用户是否有本地数据
+      if (los) {
+        //有
+        // 将本地存储的数据渲染在列表上
+        this.art_channels = los;
+        return;
+      }
+      // 若是用户没有本地存储---则请求默认接口数据列表
       try {
         const res = await getArticlegetChannels();
-        // 将返回的值渲染给组件
         this.art_channels = res.data.data.channels;
       } catch (error) {
-        console.log(error);
+        Toast.fail("获取失败");
       }
     },
+    // 当点击按钮时更新弹层
+    top_cen() {
+      this.show = true;
+      // 触发更新事件
+      this.$bus.$emit("change");
+    },
+  },
+
+  computed: {
+    // 将vuex中的数据映射
+    ...mapState(["User"]),
   },
 };
 </script>
@@ -118,7 +172,7 @@ export default {
     right: 0px;
     width: 40px;
     height: 45px;
-    background-color: rgba(41, 213, 243, 0.3);
+    background-color: rgb(210, 224, 226);
   }
   // 占位box
   #codd {

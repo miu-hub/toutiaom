@@ -28,3 +28,21 @@ export const allChannels = () => {
         url: '/app/v1_0/channels'
     })
 }
+
+
+// 操作（添加）文章列表
+export const addChannels = (data) => {
+    return request({
+        method: 'PATCH',
+        url: '/app/v1_0/user/channels',
+        data,
+    })
+}
+
+// 操作（删除）文章列表
+export const delChannels = (id) => {
+    return request({
+        method: 'DELETE',
+        url: `/app/v1_0/user/channels/${id}`,
+    })
+}
