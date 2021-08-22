@@ -22,3 +22,19 @@ export const search_result = (params) => {
         params,
     })
 }
+
+// 获取用户搜索历史
+export const search_history = () => {
+    return request({
+        method: 'GET',
+        url: '/app/v1_0/search/histories'
+    })
+}
+
+// 删除用户的搜索历史
+export const del_search = () => {
+    return request({
+        method: 'DELETE',
+        url: '/app/v1_0/search/histories'
+    })
+}
