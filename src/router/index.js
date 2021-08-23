@@ -40,6 +40,11 @@ const routes = [
     path: '/search',
     name: 'search',
     component: () => import('@/views/search/')
+  },
+  {
+    path: '/article/:art_id',
+    name: 'article_det',
+    component: () => import('@/views/article/')
   }
 ]
 

@@ -1,6 +1,6 @@
 <template>
   <!-- 文章预览 -->
-  <div id="item">
+  <div id="item" @click="$router.push(`/article/${items.art_id}`)">
     <!-- 标题 -->
     <div id="title_item">
       <p>{{ this.items.title }}</p>
