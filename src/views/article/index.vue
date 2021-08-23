@@ -63,13 +63,13 @@
       ref="art_main"
     ></div>
 
-    <!-- 评论区 -->
+    <!-- 评论区--展示 -->
     <div id="comment_list">
       <van-divider :style="{ color: '#666', borderColor: '#666' }">
         正文结束
       </van-divider>
 
-      <Comment />
+      <Comment :article_id="art_id" />
     </div>
 
     <!-- 评论区 -->
