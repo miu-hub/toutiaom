@@ -4,11 +4,12 @@
 
 import request from '@/utils/request';
 // 获取评论或评论回复
-export const getComment = (params) => {
+export const getComment = (params, data) => {
     return request({
         method: 'GET',
         url: '/app/v1_0/comments',
         params,
+        data,
     })
 }
 // 对评论或评论回复点赞
@@ -26,8 +27,7 @@ export const nolikings = (target) => {
         url: `/app/v1_0/comment/likings/${target}`
     })
 }
-
-// 对文章进行评论
+// 对文章或回复进行评论
 export const art_comm = (data) => {
     return request({
         method: 'POST',

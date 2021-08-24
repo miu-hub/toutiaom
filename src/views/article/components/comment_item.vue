@@ -30,7 +30,12 @@
       <!-- 底部信息 -->
       <div id="info_bottom">
         <span id="time">{{ datas.pubdate | datatime }}</span>
-        <van-button class="btn" size="mini" color="rgb(26, 16, 68)" round
+        <van-button
+          @click="onclick(datas)"
+          class="btn"
+          size="mini"
+          color="rgb(26, 16, 68)"
+          round
           >{{ datas.reply_count }}回复</van-button
         >
       </div>
@@ -59,6 +64,7 @@ export default {
   },
 
   methods: {
+    // 点赞评论or取消
     async add_like(c_id) {
       if (this.User) {
         if (this.item.is_liking) {
@@ -78,6 +84,12 @@ export default {
         return;
       }
       Toast.fail("登录才能点赞信息");
+    },
+
+    // 点击回复
+    onclick(item) {
+      // 触发回复评论组件
+      this.$bus.$emit("reply", item);
     },
   },
 
@@ -143,8 +155,11 @@ export default {
       width: 100%;
       min-height: 40px;
       p {
+        width: 100%;
         font-size: 18px;
         padding: 10px;
+        word-wrap: break-word;
+        word-break: break-all;
       }
     }
 

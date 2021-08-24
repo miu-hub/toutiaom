@@ -117,6 +117,10 @@
     <van-popup v-model="pl_case" position="bottom">
       <PostComm :art_id="art_id" />
     </van-popup>
+    <!-- 回复评论组件 -->
+    <van-popup v-model="r_case" position="bottom" :style="{ height: '80%' }">
+      <Reply :art_id="art_id" :replay="reply_data" />
+    </van-popup>
   </div>
 </template>
 
@@ -144,11 +148,13 @@ import { mapState } from "vuex";
 // 引入子组件
 import comment from "./components/comments.vue";
 import post_comm from "./components/post_comment.vue";
+import Replycomm from "./components/Reply_to_comment.vue";
 export default {
   name: "article_det",
   components: {
     Comment: comment,
     PostComm: post_comm,
+    Reply: Replycomm,
   },
   data() {
     return {
@@ -166,8 +172,12 @@ export default {
       value: "",
       // 评论框显示隐藏
       pl_case: false,
+      // 回复评论框显示与隐藏
+      r_case: false,
       // 评论总数
       total_count: 0,
+      // 文章回复的评论对象数据
+      reply_data: [],
     };
   },
   created() {
@@ -187,12 +197,18 @@ export default {
     this.$bus.$on("pl_num", (num) => {
       this.total_count = num;
     });
+    // 触发回复评论组件
+    this.$bus.$on("reply", (data) => {
+      // 将评论用户数据传递到父组件-----在传递子组件reply
+      this.reply_data = data;
+      this.r_case = true;
+    });
   },
   beforeDestroy() {
     this.$bus.$off("getList");
     this.$bus.$off("pl_num");
+    this.$bus.$off("reply");
   },
-
   methods: {
     //   获取文章详情方法
     async getArticle(Id) {

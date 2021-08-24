@@ -28,12 +28,12 @@ export default {
   props: {
     art_id: {
       //文章id
-      Type: [String | Number | Object],
+      Type: [String, Number, Object],
       required: true,
     },
     pl_id: {
       //评论id
-      Type: [String | Number | Object],
+      Type: [String, Number, Object],
       required: false,
     },
   },
@@ -61,6 +61,11 @@ export default {
           });
           this.message = "";
           Toast.success("评论成功");
+          // 判断回复的是文章还是评论
+          if (this.pl_id) {
+            this.$bus.$emit("getList_reply", res);
+            return;
+          }
           // 将获取的数据交给父组件用来渲染评论列表
           this.$bus.$emit("getList", res);
         } catch (error) {
