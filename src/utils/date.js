@@ -18,3 +18,9 @@ Vue.filter('timeout', value => {
     // console.log(value + "|" + dayjs().format('YYYY-MM-DD'));
     return dayjs(value).from(dayjs())
 })
+
+// 定义一个全局过滤器格式时间
+Vue.filter('datatime', value => {
+    // console.log(value + "|" + dayjs().format('YYYY-MM-DD'));
+    return dayjs(value).format('YYYY-MM-DD HH:mm')
+})

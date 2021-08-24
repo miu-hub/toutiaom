@@ -1,26 +1,37 @@
 <template>
+  <!-- 评论区 -->
   <div id="pl_item">
     <!-- 头像 -->
     <div id="photo">
-      <van-image fit="cover" class="img" round :src="item.aut_photo" />
+      <van-image fit="cover" class="img" round :src="datas.aut_photo" />
     </div>
 
     <!-- 信息 -->
     <div id="info">
       <!-- 昵称和点赞 -->
       <div id="info_top">
-        <p>{{ item.aut_name }}</p>
-        <div id="good"><span>2</span><i class="iconfont icon-dianzan"></i></div>
+        <p>{{ datas.aut_name }}</p>
+        <div id="good">
+          <span>{{ datas.like_count }}</span
+          ><i
+            @click="add_like(datas.com_id)"
+            :class="{
+              iconfont: true,
+              'icon-dianzan': !datas.is_liking,
+              'icon-tubiaozhizuo-': datas.is_liking,
+            }"
+          ></i>
+        </div>
       </div>
       <!-- 评论信息 -->
       <div id="info_c">
-        <p>{{ item.content }}</p>
+        <p>{{ datas.content }}</p>
       </div>
       <!-- 底部信息 -->
       <div id="info_bottom">
-        <span id="time">{{ item.pubdate }}</span>
+        <span id="time">{{ datas.pubdate | datatime }}</span>
         <van-button class="btn" size="mini" color="rgb(26, 16, 68)" round
-          >12252回复</van-button
+          >{{ datas.reply_count }}回复</van-button
         >
       </div>
     </div>
@@ -28,6 +39,9 @@
 </template>
 
 <script>
+import { likings, nolikings } from "@/apis/comment";
+import { Toast } from "vant";
+import { mapState } from "vuex";
 export default {
   name: "commentItem",
   props: {
@@ -36,13 +50,50 @@ export default {
       required: true,
     },
   },
+
+  data() {
+    return {
+      // 评论数据
+      data: [],
+    };
+  },
+
+  methods: {
+    async add_like(c_id) {
+      if (this.User) {
+        if (this.item.is_liking) {
+          //取消点赞
+          await nolikings(c_id);
+          this.data.is_liking = false;
+          this.data.like_count -= 1;
+        } else {
+          //点赞
+          await likings({
+            target: c_id,
+          });
+          // 更改状态
+          this.data.is_liking = true;
+          this.data.like_count += 1;
+        }
+        return;
+      }
+      Toast.fail("登录才能点赞信息");
+    },
+  },
+
+  computed: {
+    ...mapState(["User"]),
+    datas() {
+      this.data = this.item;
+      return this.data;
+    },
+  },
 };
 </script>
 <style lang="less">
 #pl_item {
   display: flex;
   width: 100%;
-  margin-top: 10px;
   padding: 10px;
   background-color: #fff;
   border: 1px solid rgb(235, 229, 229);
@@ -54,7 +105,6 @@ export default {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 1px solid #666;
     .img {
       width: 39px;
       height: 39px;
@@ -72,7 +122,7 @@ export default {
       justify-content: space-between;
       width: 100%;
       height: 30px;
-    //   昵称
+      //   昵称
       p {
         font-size: 16px;
         line-height: 30px;

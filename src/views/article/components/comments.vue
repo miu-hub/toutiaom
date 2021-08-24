@@ -2,16 +2,14 @@
   <div id="comment_list">
     <div id="all">
       <p>全部评论</p>
-      <!-- 评论模块 -->
-      <!-- <van-pull-refresh v-model="loading" @refresh="onRefresh">
-      </van-pull-refresh> -->
+      <!-- 评论加载 -->
       <van-list
         v-model="loading"
         :finished="finished"
         finished-text="没有更多了"
         @load="onLoad"
       >
-        <CommentItem v-for="(item, i) in list" :key="i" :item="item" />
+        <CommentItem v-for="(item, i) in this.list" :key="i" :item="item" />
       </van-list>
     </div>
   </div>
@@ -31,12 +29,15 @@ export default {
       Type: Number,
       required: true,
     },
+    list: {
+      // 评论数据
+      type: Array,
+      required: true,
+    },
   },
 
   data() {
     return {
-      // 评论数据
-      list: [],
       // 文章id
       a_id: this.article_id,
       offset: null, //偏移
@@ -65,6 +66,9 @@ export default {
         let datas = res.data.data.results;
         // 将返回的评论数据添加给渲染数组
         this.list.push(...datas);
+        // 将评论总数传递给父组件
+        let total = res.data.data.total_count;
+        this.$bus.$emit("pl_num", total);
         // 更改加载状态
         this.loading = false;
         // 判断还有无新增数据

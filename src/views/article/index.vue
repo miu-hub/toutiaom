@@ -69,12 +69,13 @@
         正文结束
       </van-divider>
 
-      <Comment :article_id="art_id" />
+      <Comment :article_id="art_id" :list="pl_list" />
     </div>
 
     <!-- 评论区 -->
     <div id="comment">
       <van-button
+        @click="pl_case = !pl_case"
         class="pl"
         color="rgb(26, 16, 68)"
         icon="comment-o"
@@ -85,7 +86,11 @@
         >写评论</van-button
       >
       <!-- 评论数量 -->
-      <i class="iconfont icon-pinglun"></i>
+      <van-icon
+        name="comment-o"
+        size="0.5rem"
+        :badge="this.total_count > 99 ? '99+' : this.total_count"
+      />
       <!-- 收藏 -->
       <i
         @click="like(data.is_collected)"
@@ -107,6 +112,11 @@
       <!-- 转发 -->
       <van-icon name="share-o" size="0.5em" />
     </div>
+
+    <!-- 评论框 -->
+    <van-popup v-model="pl_case" position="bottom">
+      <PostComm :art_id="art_id" />
+    </van-popup>
   </div>
 </template>
 
@@ -133,15 +143,19 @@ import {
 import { mapState } from "vuex";
 // 引入子组件
 import comment from "./components/comments.vue";
+import post_comm from "./components/post_comment.vue";
 export default {
   name: "article_det",
   components: {
     Comment: comment,
+    PostComm: post_comm,
   },
   data() {
     return {
       // 文章数据
       data: {},
+      // 评论列表
+      pl_list: [],
       //   文章id
       art_id: null,
       //   控制按钮文字状态
@@ -150,6 +164,10 @@ export default {
       btn_loading: false,
       //   评论数据
       value: "",
+      // 评论框显示隐藏
+      pl_case: false,
+      // 评论总数
+      total_count: 0,
     };
   },
   created() {
@@ -157,6 +175,22 @@ export default {
     let a_id = this.$route.params.art_id;
     this.art_id = a_id;
     this.getArticle(a_id);
+  },
+  mounted() {
+    this.$bus.$on("getList", (value) => {
+      this.pl_case = false;
+      // 将评论数据渲染至评论列表
+      this.pl_list.unshift(value.data.data.new_obj);
+    });
+
+    // 处理评论总数
+    this.$bus.$on("pl_num", (num) => {
+      this.total_count = num;
+    });
+  },
+  beforeDestroy() {
+    this.$bus.$off("getList");
+    this.$bus.$off("pl_num");
   },
 
   methods: {
