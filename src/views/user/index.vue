@@ -17,7 +17,13 @@
           <p>{{ userInfo.name || "新用户" }}</p>
         </div>
         <!-- 编辑用户信息按钮 -->
-        <van-button plain round class="btn_edit" type="primary" size="small"
+        <van-button
+          to="/userDatum"
+          plain
+          round
+          class="btn_edit"
+          type="primary"
+          size="small"
           >编辑用户信息</van-button
         >
       </div>

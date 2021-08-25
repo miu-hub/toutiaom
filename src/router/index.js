@@ -10,8 +10,7 @@ const routes = [
     path: '/login',
     name: 'login',
     component: () => import('@/views/login/')
-  },
-  {
+  }, {
     path: '/',
     component: () => import('@/views/layout/'),
     children: [
@@ -35,16 +34,18 @@ const routes = [
         component: () => import('@/views/user/')
       }
     ]
-  },
-  {
+  }, {
     path: '/search',
     name: 'search',
     component: () => import('@/views/search/')
-  },
-  {
+  }, {
     path: '/article/:art_id',
     name: 'article_det',
     component: () => import('@/views/article/')
+  }, {
+    path: '/userDatum',
+    name: 'userDatum',
+    component: () => import('@/views/user_datum/'),
   }
 ]
 

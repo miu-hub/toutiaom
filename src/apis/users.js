@@ -29,6 +29,14 @@ export const getUser = () => {
         //用户token在请求拦截中设置了
     })
 }
+// 编辑用户资料
+export const setUser = (data) => {
+    return request({
+        method: 'PATCH',
+        url: '/app/v1_0/user/profile',
+        data,
+    })
+}
 // 关注其他用户
 export const addFollowed = (data) => {
     return request({
