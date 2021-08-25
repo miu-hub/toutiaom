@@ -70,6 +70,7 @@ export default {
       Toast.loading({
         message: "保存中...",
         forbidClick: true,
+        duration: 0,
       });
       try {
         const res = await setUser({

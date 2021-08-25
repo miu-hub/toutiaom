@@ -162,14 +162,6 @@ export default {
         try {
           const res = await search_history();
           // // 未登录状态时获取本地的历史记录
-          // let is_null = getItem("search_history");
-          // // 判断本地存储是否为空
-          // if (is_null === null) {
-          //   // 为空时将其转换为数组类型
-          //   is_null = [];
-          // }
-          // let his = new Set(...res.data.data.keywords, ...is_null);
-          // console.log(his);
           this.article_keywords = res.data.data.keywords;
         } catch (error) {
           console.log("获取失败");

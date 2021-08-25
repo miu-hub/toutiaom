@@ -42,6 +42,7 @@ export default {
       Toast.loading({
         message: "保存中...",
         forbidClick: true,
+        duration: 0,
       });
       this.num = i;
       await setUser({ gender: this.num });

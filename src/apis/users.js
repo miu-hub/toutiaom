@@ -37,6 +37,14 @@ export const setUser = (data) => {
         data,
     })
 }
+// 编辑用户照片资料
+export const setPhoto = (data) => {
+    return request({
+        method: 'PATCH',
+        url: '/app/v1_0/user/photo',
+        data,
+    })
+}
 // 关注其他用户
 export const addFollowed = (data) => {
     return request({

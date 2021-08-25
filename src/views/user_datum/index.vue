@@ -10,7 +10,8 @@
       @click-left="$router.back()"
     />
     <!-- 用户信息区 -->
-    <van-cell class="cell" title="头像" is-link>
+    <input type="file" ref="img" accept="image/*" hidden @change="onChange" />
+    <van-cell class="cell" title="头像" @click="$refs.img.click()" is-link>
       <van-image
         width="30"
         height="30"
@@ -58,21 +59,34 @@
     <van-popup v-model="show_bir" position="bottom">
       <UserBirthday v-if="show_bir" :time="info.birthday" />
     </van-popup>
+    <!-- 上传图片 -->
+    <van-popup
+      v-model="show_img"
+      duration="0"
+      position="bottom"
+      :style="{ height: '100%' }"
+    >
+      <UserImg :pre_imgobj="user_photo" v-if="show_img" />
+    </van-popup>
   </div>
 </template>
 
 <script>
+// 引入修改方法
 import { getUser } from "@/apis/users";
 import { Toast } from "vant";
+// 引入子组件
 import userName from "./components/user_name.vue";
 import userGenter from "./components/user_genter.vue";
 import userBirth from "./components/user_birthday.vue";
+import UserImg from "./components/user_photo.vue";
 export default {
   name: "userDatum",
   components: {
     UserName: userName,
     UserGenter: userGenter,
     UserBirthday: userBirth,
+    UserImg,
   },
 
   data() {
@@ -81,8 +95,11 @@ export default {
       show_name: false,
       show_genter: false,
       show_bir: false,
+      show_img: false,
       //   用户信息
       info: {},
+      // 头像信息
+      user_photo: "",
     };
   },
 
@@ -113,11 +130,20 @@ export default {
       }
       this.show_bir = false;
     });
+    // 触发的更新头像事件
+    this.$bus.$on("updata_photo", (newimg) => {
+      if (newimg != null) {
+        this.info.photo = newimg;
+      }
+      this.show_img = false;
+    });
   },
   beforeDestroy() {
     //   组件卸载时销毁全局事件
     this.$bus.$off("back");
     this.$bus.$off("back_gender");
+    this.$bus.$off("settime");
+    this.$bus.$off("updata_photo");
   },
 
   methods: {
@@ -129,6 +155,18 @@ export default {
       } catch (error) {
         Toast.fail("获取用户信息失败");
       }
+    },
+
+    // 上传图片时
+    onChange() {
+      // 获取选取的图片文件对象
+      const blob = this.$refs.img.files[0];
+      // 打开弹层
+      this.show_img = true;
+      // 将数据传递给子组件
+      this.user_photo = blob;
+      // 清空input内容
+      this.$refs.img.value = "";
     },
   },
 };
