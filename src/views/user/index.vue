@@ -69,7 +69,7 @@
       <i class="iconfont icon-you"></i>
     </div>
     <!-- 小智同学 -->
-    <div id="xiaozhi">
+    <div id="xiaozhi" @click="$router.push('/user/chat')">
       <p>小智同学</p>
       <i class="iconfont icon-you"></i>
     </div>

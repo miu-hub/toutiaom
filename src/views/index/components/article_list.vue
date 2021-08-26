@@ -3,6 +3,7 @@
     <!-- 文章展示 -->
     <van-list
       class="loading_list"
+      ref="list"
       v-model="loading"
       :finished="finished"
       finished-text="没有更多了"
@@ -47,8 +48,24 @@ export default {
       finished: false, //结束控件-----为true时停止加载数据
       time_stop: null, //获取当前事件戳来更新数据---获取不同页码的数据
       isloading: false, //下拉的状态
+      scrollTop: 0, //滚动的距离
     };
   },
+
+  mounted() {
+    let list = this.$refs.list.$el;
+    list.addEventListener("scroll", () => {
+      this.scrollTop = list.scrollTop;
+    });
+  },
+
+  activated() {
+    this.$refs.list.$el.scrollTop = this.scrollTop;
+    console.log("从缓存中被激活了");
+  },
+  // deactivated() {
+  //   console.log("从组件失去活动");
+  // },
 
   methods: {
     // 加载文章列表方法

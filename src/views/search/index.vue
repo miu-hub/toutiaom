@@ -115,7 +115,7 @@ export default {
         // 将返回的数据传递给子组件
         this.article_data = datas.results;
         // 遍历数组，找出相同的历史记录并移除
-        this.article_keywords.forEach((item) => {
+        this.article_keywords.forEach((item, i) => {
           if (item === val) {
             this.article_keywords.splice(i, 1);
             return;

@@ -1,6 +1,8 @@
 <template>
   <div id="layout">
-    <router-view />
+    <keep-alive>
+      <router-view />
+    </keep-alive>
     <van-tabbar v-model="active" route>
       <van-tabbar-item class="iconfont icon-zhuye" to="/">首页</van-tabbar-item>
       <van-tabbar-item class="iconfont icon-V" to="/faqs">问答</van-tabbar-item>
@@ -21,6 +23,10 @@ export default {
     return {
       active: 0,
     };
+  },
+  created() {
+    // 添加组件缓存
+    this.$store.commit("addInclude", "layout");
   },
 };
 </script>

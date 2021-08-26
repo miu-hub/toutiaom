@@ -3,12 +3,15 @@
  */
 
 import axios from 'axios';
-
+import router from '@/router/'
 import Store from '@/store/index.js';
-
+import { setItem } from '@/utils/storage'
+import { Toast } from 'vant';
 // 引入json-bigint包
 import bigint from 'json-bigint'
-
+const resf_token = axios.create({
+    baseURL: 'http://ttapi.research.itcast.cn/'
+})
 const request = axios.create({
     baseURL: 'http://ttapi.research.itcast.cn/',
 
@@ -40,6 +43,64 @@ request.interceptors.request.use((config) => {
 }, (err) => {
     return promise.reject(err)
 })
+// 响应拦截器
+request.interceptors.response.use((res) => {
 
+    return res;
+}, async (err) => {
+
+    // 获取错误状态码
+    const status = err.response.status;
+    // 用户token过期
+    if (status === 401) {
+        // 获取vuex库的User数据
+        let User = Store.state.User;
+        // User无数据或无token
+        if (!User.token) {
+            Toast.fail('用户已过期,请重新登录');
+            // 跳登录
+            replay();
+        };
+
+        try {
+            // 更新token-----使用单独的请求设置
+            const res = await resf_token({
+                method: 'PUT',
+                url: '/app/v1_0/authorizations',
+                headers: {
+                    Authorization: `Bearer ${User.refresh_token}`
+                }
+            })
+
+            // 将新的token添加到vuex中
+            User.token = res.data.data.token;
+            setItem('User', User)
+            // 把失败的请求重新发送出去
+            return request(error.config)
+        } catch (error) {
+            Toast.fail('用户已过期,请重新登录');
+            replay();
+        }
+
+    } else if (status === 400) {
+        Toast.fail('客户端错误')
+    } else if (status === 403) {
+        Toast.fail('用户无权限')
+    } else if (status >= 500) {
+        Toast.fail('服务器错误')
+    }
+
+    return promise.reject(err)
+})
+
+// 跳转方法
+function replay() {
+    router.replace({
+        name: 'login',
+        query: {
+            redirects: router.currentRoute.fullPath
+        }
+    });
+};
 
 export default request;

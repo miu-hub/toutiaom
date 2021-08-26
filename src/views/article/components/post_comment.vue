@@ -50,6 +50,7 @@ export default {
       Toast.loading({
         message: "加载中...",
         forbidClick: true,
+        duration: 0,
       });
       if (this.User) {
         try {

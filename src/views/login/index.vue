@@ -128,8 +128,10 @@ export default {
         Toast.success("登录成功");
         // 关闭登录显示登录中
         this.isLoading = false;
+        // 登录成功后删除前一个的组件缓存
+        this.$store.commit("removeInclude", "layout");
         // 跳转
-        this.$router.push("/user");
+        this.$router.push(this.$route.query.redirects || "/user");
       } catch (error) {
         // 登录失败
         console.log(error);

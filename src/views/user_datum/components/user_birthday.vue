@@ -45,6 +45,7 @@ export default {
         Toast.loading({
           message: "保存中...",
           forbidClick: true,
+          duration: 0,
         });
         await setUser({ birthday: time });
         Toast.success("保存成功");

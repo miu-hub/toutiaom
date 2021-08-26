@@ -28,7 +28,9 @@ export default {
 
   methods: {
     Query(i) {
-      console.log(i);
+      // 点击后跳转到相应的页面上
+      let id = this.article_data[i].art_id;
+      this.$router.push(`/article/${id}`);
     },
   },
 };
